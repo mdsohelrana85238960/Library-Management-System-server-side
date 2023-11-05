@@ -28,7 +28,24 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
+   
+
+    const bookCollection = client.db('library').collection('books')
+
+    app.post('/books', async(req,res) =>{
+      const user = req.body;
+      const result = await bookCollection.insertOne(user);
+      res.send(result)
+    })
+
+
+    app.get('/books', async(req,res) =>{
+        const cursor = bookCollection.find();
+        const result = await cursor.toArray();
+        res.send(result)
+    })
+
+
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
@@ -48,3 +65,6 @@ app.get('/',(req,res) =>{
 app.listen(port, () => {
     console.log(`this server is running on the post ${port}`)
 })
+
+
+
