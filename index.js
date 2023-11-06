@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 //middleware 
 app.use(cors());
@@ -31,12 +31,69 @@ async function run() {
    
 
     const bookCollection = client.db('library').collection('books')
+    const borrowBooksCollection = client.db('library').collection('borrowBooks')
+    //borrow 
+    app.post('/borrowBooks', async(req,res) =>{
+      const user = req.body;
+      const result = await borrowBooksCollection.insertOne(user);
+      res.send(result)
+    })
+    app.get('/borrowBooks', async(req,res) =>{
+      const cursor = borrowBooksCollection.find();
+      const result = await cursor.toArray();
+      res.send(result)
+  })
 
+  app.delete("/borrowBooks/:id", async (req, res) => {
+    const id = req.params.id;
+    console.log("delete", id);
+    const query = {
+      _id: new ObjectId(id),
+    };
+    const result = await borrowBooksCollection.deleteOne(query)
+    //findbooks from bookcollectrion findone 
+    //create set obj quantity
+    // update data using update one 
+    console.log(result);
+    res.send(result);
+  });
+
+  
+app.put("/books/:id", async (req, res) => {
+  const id = req.params.id;
+  const data = req.body;
+  console.log("id", id, data);
+  const filter = { _id: new ObjectId(id) };
+  const options = { upsert: true };
+  const updatedUSer = {
+    $set: {
+      quantity: data.quantity,
+      
+    },
+  };
+  const result = await bookCollection.updateOne(
+    filter,
+    updatedUSer,
+    options
+  );
+  res.send(result);
+});
+
+      //books
     app.post('/books', async(req,res) =>{
       const user = req.body;
       const result = await bookCollection.insertOne(user);
       res.send(result)
     })
+
+    app.get("/books/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = {
+        "_id" : new ObjectId(id)
+      };
+      const result = await bookCollection.findOne(query);
+      res.send(result);
+    });
 
 
     app.get('/books', async(req,res) =>{
