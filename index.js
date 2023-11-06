@@ -68,6 +68,11 @@ app.put("/books/:id", async (req, res) => {
   const updatedUSer = {
     $set: {
       quantity: data.quantity,
+      photo: data.photo,
+      bookName: data.bookName,
+      category: data.category,
+      author: data.author,
+      rating: data.rating,
       
     },
   };
