@@ -144,6 +144,7 @@ async function run() {
 
 
   // app.delete("/borrowBooks/:id", async (req, res) => {
+    
   //   const id = req.params.id;
   //   console.log("delete", id);
   //   const query = {
@@ -153,8 +154,9 @@ async function run() {
   //   const result = await borrowBooksCollection.deleteOne(query);
   
   //   if (result.deletedCount > 0) {
-  //     // If a record was deleted, update the quantity in the bookCollection
-  //     const bookId = req.body.bookId; // You need to provide the bookId in the request body
+    
+  //     const bookId = req.body.bookId; 
+  //     console.log(bookId)
   //     const bookFilter = { _id: new ObjectId(bookId) };
   
   //     const bookUpdateResult = await bookCollection.updateOne(bookFilter, update);
