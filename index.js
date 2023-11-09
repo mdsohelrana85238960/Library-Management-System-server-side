@@ -11,7 +11,8 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 app.use(cors({
   origin:['https://cd-library-management-system.web.app' ,
    'https://cd-library-management-system.firebaseapp.com',
-   'http://localhost:5173'
+   'http://localhost:5173',
+   'http://localhost:5174'
   ],
   credentials:true,
 }
@@ -142,6 +143,7 @@ async function run() {
     res.send(result);
   }); 
 
+  
 
   // app.delete("/borrowBooks/:id", async (req, res) => {
     
